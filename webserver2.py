@@ -19,6 +19,8 @@ https://manpages.debian.org/bullseye/manpages-dev/recv.2.en.html
 http://www.faqs.org/rfcs/rfc2616.html
 Threading
 https://www.geeksforgeeks.org/socket-programming-multi-threading-python/
+http://net-informations.com/python/net/thread.htm
+look up "python simple socket server multithreading" for useful stuff
 '''
 while True:
     # Establish the connection
