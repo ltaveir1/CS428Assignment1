@@ -11,7 +11,7 @@ serverSocket = socket(AF_INET, SOCK_STREAM)
 hostname = gethostname()
 ip_address = gethostbyname(hostname)
 port_number = 59670
-serverSocket.bind(('localhost', port_number)) #not sure that I got my ip and socket properly but I think this is right
+serverSocket.bind((ip_address, port_number)) #not sure that I got my ip and socket properly but I think this is right
 serverSocket.listen(1)
 print(ip_address + ':' + str(port_number))
 
