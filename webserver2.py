@@ -8,7 +8,7 @@ import sys
 
 # Prepare a sever socket
 serverSocket = socket(AF_INET, SOCK_STREAM)
-serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 ### YOUR CODE HERE ###
 #'10.0.0.40'
 hostname = gethostname()
@@ -33,17 +33,12 @@ look up "python simple socket server multithreading" for useful stuff
 
 https://www.techbeamers.com/python-tutorial-write-multithreaded-python-server/
 https://www.tutorialspoint.com/socket-programming-with-multi-threading-in-python
-
+https://www.positronx.io/create-socket-server-with-multiple-clients-in-python/
 seems like making a thread class might be necessary?
 '''
-
-while True:
-    # Establish the connection
-    print('Ready to serve...')
-
-    connectionSocket, addr = serverSocket.accept() ## YOUR CODE HERE ###
-
+def multi_threaded_client(connection):
     try:
+        print("yeah we here")
         '''
         #recv(): recieve a message from socket
         #socket.recv(bufsize[, flags]), For best match with hardware and network realities, 
@@ -62,13 +57,6 @@ while True:
             # Format: "HTTP/1.1 *code-for-successful-request*\r\n\r\n"
             returnmes = 'HTTP/1.1 200 OK\r\n\r\n'.encode()
             connectionSocket.send(returnmes)
-            
-            """pid = os.fork(); #this fork may not be correct, the link I found had a completely different thing happingin
-            
-            if(n > 0):
-                print("parent process with pid", os.getpid());
-            else:
-                print("child process with pid", os.getpid());"""
 
             # Send the content of the requested file into socket
             for i in range(0, len(outputdata)):
@@ -88,6 +76,14 @@ while True:
         # Close client socket
         ### YOUR CODE HERE ###
         connectionSocket.close()
+
+while True:
+    # Establish the connection
+    print('Ready to serve...')
+    connectionSocket, addr = serverSocket.accept() ## YOUR CODE HERE ###
+    start_new_thread(multi_threaded_client, (connectionSocket, ))
+
+    
 
 # Close server socket
 serverSocket.close()
