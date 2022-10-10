@@ -7,8 +7,13 @@ import sys
 # Prepare a sever socket
 serverSocket = socket(AF_INET, SOCK_STREAM)
 ### YOUR CODE HERE ###
-serverSocket.bind(('10.0.0.40', 59670)) #not sure that I got my ip and socket properly but I think this is right
+#'10.127.147.133'
+hostname = gethostname()
+ip_address = gethostbyname(hostname)
+port_number = 59670
+serverSocket.bind(('localhost', port_number)) #not sure that I got my ip and socket properly but I think this is right
 serverSocket.listen(1)
+print(ip_address + ':' + str(port_number))
 
 '''
 Good resources for stuff
@@ -32,21 +37,24 @@ while True:
         Logan's note: stuff on the internet seemed to use 1024 as the number tho
         '''
         message = connectionSocket.recv(1024) ## YOUR CODE HERE ###  may want to change up this number not sure how important it is
-        
-        filename = message.split()[1]
-        f = open(filename[1:])
-        outputdata = f.read()### YOUR CODE HERE ###
+        if message:
+            filename = message.split()[1]
+            f = open(filename[1:])
+            outputdata = f.read()### YOUR CODE HERE ###
 
-        # Send one HTTP header line into socket
-        ### YOUR CODE HERE ###
-        # Format: "HTTP/1.1 *code-for-successful-request*\r\n\r\n"
-        returnmes = 'HTTP/1.1 200 OK\r\n\r\n'.encode()
-        connectionSocket.send(returnmes)
+            # Send one HTTP header line into socket
+            ### YOUR CODE HERE ###
+            # Format: "HTTP/1.1 *code-for-successful-request*\r\n\r\n"
+            returnmes = 'HTTP/1.1 200 OK\r\n\r\n'.encode()
+            connectionSocket.send(returnmes)
 
-        # Send the content of the requested file into socket
-        for i in range(0, len(outputdata)):
-            connectionSocket.send(outputdata[i].encode())
-        connectionSocket.send("\r\n".encode())
+            # Send the content of the requested file into socket
+            for i in range(0, len(outputdata)):
+                connectionSocket.send(outputdata[i].encode())
+            connectionSocket.send("\r\n".encode())
+        else:
+            #Avoid index error
+            print("file not found")
 
         # Close client socket
         connectionSocket.close()

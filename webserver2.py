@@ -1,14 +1,23 @@
 # import socket module
 from socket import *
-import os
+#import os
+from _thread import *
+import threading
 # In order to terminate the program
 import sys
 
 # Prepare a sever socket
 serverSocket = socket(AF_INET, SOCK_STREAM)
+serverSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 ### YOUR CODE HERE ###
-serverSocket.bind(('10.0.0.40', 59670)) #not sure that I got my ip and socket properly but I think this is right
-serverSocket.listen(1)
+#'10.0.0.40'
+hostname = gethostname()
+ip_address = gethostbyname(hostname)
+port_number = 59670
+serverSocket.bind((ip_address, port_number)) #not sure that I got my ip and socket properly but I think this is right
+serverSocket.listen(6)
+threads = []
+print(ip_address + ':' + str(port_number))
 
 '''
 Good resources for stuff
@@ -21,7 +30,13 @@ Threading
 https://www.geeksforgeeks.org/socket-programming-multi-threading-python/
 http://net-informations.com/python/net/thread.htm
 look up "python simple socket server multithreading" for useful stuff
+
+https://www.techbeamers.com/python-tutorial-write-multithreaded-python-server/
+https://www.tutorialspoint.com/socket-programming-with-multi-threading-in-python
+
+seems like making a thread class might be necessary?
 '''
+
 while True:
     # Establish the connection
     print('Ready to serve...')
@@ -35,30 +50,33 @@ while True:
         #the value of bufsize should be a relatively small power of 2, for example, 4096.
         Logan's note: stuff on the internet seemed to use 1024 as the number tho
         '''
+
         message = connectionSocket.recv(1024) ## YOUR CODE HERE ###  may want to change up this number not sure how important it is
-        
-        filename = message.split()[1]
-        f = open(filename[1:])
-        outputdata = f.read()### YOUR CODE HERE ###
+        if message:
+            filename = message.split()[1]
+            f = open(filename[1:])
+            outputdata = f.read()### YOUR CODE HERE ###
 
-        # Send one HTTP header line into socket
-        ### YOUR CODE HERE ###
-        # Format: "HTTP/1.1 *code-for-successful-request*\r\n\r\n"
-        returnmes = 'HTTP/1.1 200 OK\r\n\r\n'.encode()
-        connectionSocket.send(returnmes)
-        
-        pid = os.fork(); #this fork may not be correct, the link I found had a completely different thing happingin
-        
-        if(n > 0):
-            print("parent process with pid", os.getpid());
+            # Send one HTTP header line into socket
+            ### YOUR CODE HERE ###
+            # Format: "HTTP/1.1 *code-for-successful-request*\r\n\r\n"
+            returnmes = 'HTTP/1.1 200 OK\r\n\r\n'.encode()
+            connectionSocket.send(returnmes)
+            
+            """pid = os.fork(); #this fork may not be correct, the link I found had a completely different thing happingin
+            
+            if(n > 0):
+                print("parent process with pid", os.getpid());
+            else:
+                print("child process with pid", os.getpid());"""
+
+            # Send the content of the requested file into socket
+            for i in range(0, len(outputdata)):
+                connectionSocket.send(outputdata[i].encode())
+            connectionSocket.send("\r\n".encode())
         else:
-            print("child process with pid", os.getpid());
-
-        # Send the content of the requested file into socket
-        for i in range(0, len(outputdata)):
-            connectionSocket.send(outputdata[i].encode())
-        connectionSocket.send("\r\n".encode())
-
+            #Avoid index error
+            print("file not found")
         # Close client socket
         connectionSocket.close()
     except IOError:
