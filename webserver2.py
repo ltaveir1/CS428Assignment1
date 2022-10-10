@@ -17,6 +17,7 @@ port_number = 59670
 serverSocket.bind((ip_address, port_number)) #not sure that I got my ip and socket properly but I think this is right
 serverSocket.listen(6)
 threads = []
+ThreadCount = 0
 print(ip_address + ':' + str(port_number))
 
 '''
@@ -82,6 +83,8 @@ while True:
     print('Ready to serve...')
     connectionSocket, addr = serverSocket.accept() ## YOUR CODE HERE ###
     start_new_thread(multi_threaded_client, (connectionSocket, ))
+    ThreadCount += 1
+    print('Thread Number: ' + str(ThreadCount))
 
     
 
