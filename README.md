@@ -10,6 +10,7 @@ to view a web page stored with the server code.
 ### NOTES, KNOWN BUGS, AND/OR INCOMPLETE PARTS
 
 [Add any notes you have here and/or any parts of the project you were not able to complete]: #
+Bug: When multithreading, will create two threads instead of one for the first connection from a client.
 
 ### REFERENCES
 
@@ -18,6 +19,8 @@ to view a web page stored with the server code.
 ### INSTRUCTIONS
 
 [Provide clear and complete step-by-step instructions on how to run and test your project]: #
+Run the code and wait for it to say "Ready to serve." Then type the printed IP address and socket number, followed by 
+"/filename", into a web browser to access the file you are looking for.
 
 ### SUBMISSION
 
