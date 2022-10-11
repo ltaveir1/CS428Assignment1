@@ -15,12 +15,15 @@ Bug: When multithreading, will create two threads instead of one for the first c
 ### REFERENCES
 
 [List any outside resources used]: #
+https://docs.python.org/3/library/socket.html
+https://www.positronx.io/create-socket-server-with-multiple-clients-in-python/
+https://www.tutorialspoint.com/python-program-to-find-the-ip-address-of-the-client
 
 ### INSTRUCTIONS
 
 [Provide clear and complete step-by-step instructions on how to run and test your project]: #
-Run the code and wait for it to say "Ready to serve." Then type the printed IP address and socket number, followed by 
-"/filename", into a web browser to access the file you are looking for.
+Run the server code and wait for it to print "Ready to serve." Then type the printed IP address and socket number, followed by 
+"/filename", into a web browser to access the file you are looking for. File must be in the same directory as the server code.
 
 ### SUBMISSION
 
