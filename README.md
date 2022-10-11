@@ -4,7 +4,8 @@
 
 ### SUMMARY
 
-[Provide a short description of your program's functionality, no more than a couple sentences]: #
+This program creates a socket for a server that clients can remotely access using the server's IP address and port number
+to view a web page stored with the server code.
 
 ### NOTES, KNOWN BUGS, AND/OR INCOMPLETE PARTS
 
@@ -26,7 +27,7 @@ By signing my name below and submitting the project, I confirm the above stateme
 
 Submission date:
 
-Team member 1 name:
+Team member 1 name: Logan Taveira
 
-Team member 2 name:
+Team member 2 name: Jacob Feinland
 
